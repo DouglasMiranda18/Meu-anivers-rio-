@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Douglas.exe - Aniversário 21 Anos</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #00ff88;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: slideDown 1s ease-out;
+        }
+        
+        .ai-prompt {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-prompt::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00ff88, #ff0080, #0080ff, #00ff88);
+            border-radius: 15px;
+            z-index: -1;
+            animation: borderGlow 3s linear infinite;
+        }
+        
+        .typing-effect {
+            border-right: 3px solid #00ff88;
+            animation: blink 1s infinite;
+        }
+        
+        .main-title {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ff88, #ff0080, #0080ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #ff0080;
+            margin-bottom: 30px;
+        }
+        
+        .countdown-container {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+            border: 2px solid #0080ff;
+            box-shadow: 0 0 30px rgba(0, 128, 255, 0.3);
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+        
+        .countdown-item {
+            background: linear-gradient(135deg, #ff0080, #0080ff);
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 120px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .countdown-item:nth-child(2) { animation-delay: 0.5s; }
+        .countdown-item:nth-child(3) { animation-delay: 1s; }
+        .countdown-item:nth-child(4) { animation-delay: 1.5s; }
+        
+        .countdown-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            display: block;
+        }
+        
+        .countdown-label {
+            font-size: 1rem;
+            color: white;
+            text-transform: uppercase;
+        }
+        
+        .event-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .detail-card {
+            background: rgba(0, 255, 136, 0.05);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .detail-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+        }
+        
+        .detail-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: rotate 4s linear infinite;
+        }
+        
+        .detail-title {
+            font-size: 1.5rem;
+            color: #ff0080;
+            margin-bottom: 15px;
+        }
+        
+        .detail-info {
+            font-size: 1.2rem;
+            color: #0080ff;
+        }
+        
+        .chatgpt-messages {
+            margin: 50px 0;
+        }
+        
+        .message {
+            background: rgba(0, 0, 0, 0.6);
+            border-left: 4px solid #00ff88;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            animation: slideInLeft 1s ease-out;
+        }
+        
+        .message-header {
+            color: #00ff88;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .cta-button {
+            background: linear-gradient(45deg, #ff0080, #0080ff);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 30px 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 0, 128, 0.4);
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: float-particle 6s linear infinite;
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateY(-100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slideInLeft {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes blink {
+            0%, 50% { border-color: #00ff88; }
+            51%, 100% { border-color: transparent; }
+        }
+        
+        @keyframes borderGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .countdown {
+                gap: 15px;
+            }
+            
+            .countdown-item {
+                min-width: 80px;
+                padding: 15px;
+            }
+            
+            .countdown-number {
+                font-size: 2rem;
+            }
+            
+            .cta-button {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+                margin: 20px 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <header class="header">
+            <h1 class="main-title">DOUGLAS.EXE</h1>
+            <p class="subtitle">Sistema de Aniversário v21.0 Carregando...</p>
+        </header>
+        
+        <div class="ai-prompt">
+            <div class="message-header">🤖 ChatGPT:</div>
+            <p class="typing-effect" id="typing-text">Processando convite de aniversário...</p>
+        </div>
+        
+        <div class="countdown-container">
+            <h2 style="color: #0080ff; margin-bottom: 20px; font-size: 2rem;">⏰ COUNTDOWN ATIVADO</h2>
+            <div class="countdown" id="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">00</span>
+                    <span class="countdown-label">Dias</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Horas</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Minutos</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Segundos</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="event-details">
+            <div class="detail-card">
+                <div class="detail-icon">🎂</div>
+                <h3 class="detail-title">ANIVERSARIANTE</h3>
+                <p class="detail-info">Douglas<br>21 Anos</p>
+            </div>
+            
+            <div class="detail-card">
+                <div class="detail-icon">📅</div>
+                <h3 class="detail-title">DATA/HORA</h3>
+                <p class="detail-info">21 de Agosto 2025<br>19:00h</p>
+            </div>
+            
+            <div class="detail-card">
+                <div class="detail-icon">📍</div>
+                <h3 class="detail-title">LOCAL</h3>
+                <p class="detail-info">Caricatura do Chicão</p>
+            </div>
+        </div>
+        
+        <div class="chatgpt-messages">
+            <div class="message">
+                <div class="message-header">🤖 ChatGPT:</div>
+                <p>Detectei que Douglas está fazendo upgrade para a versão 21.0! Este é um marco importante no sistema operacional da vida. Recomendo celebrar com muita diversão e alegria! 🎉</p>
+            </div>
+            
+            <div class="message">
+                <div class="message-header">🤖 ChatGPT:</div>
+                <p>Análise completa: Douglas merece uma festa épica! Meus algoritmos indicam 100% de probabilidade de diversão garantida na Caricatura do Chicão. Presença obrigatória para otimizar a felicidade! 🚀</p>
+            </div>
+            
+            <div class="message">
+                <div class="message-header">🤖 ChatGPT:</div>
+                <p>ALERTA: Festa detectada em 21/08/2025! Meus sensores indicam que será a celebração mais incrível do ano. Não perca esta oportunidade de fazer parte da história! 🎊</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin: 50px 0;">
+            <button class="cta-button" onclick="confirmarPresenca()">CONFIRMAR PRESENÇA</button>
+        </div>
+        
+        <div class="ai-prompt" style="text-align: center; margin-top: 50px;">
+            <div class="message-header">🤖 Sistema:</div>
+            <p>Convite gerado com sucesso! Douglas.exe aguarda sua presença para completar a instalação da diversão v21.0 🎈</p>
+        </div>
+    </div>
+    
+    <script>
+        // Efeito de digitação
+        const messages = [
+            "Processando convite de aniversário...",
+            "Carregando dados do Douglas...",
+            "Aniversário detectado: 21 anos!",
+            "Local identificado: Caricatura do Chicão",
+            "Data confirmada: 21/08/2025 às 19h",
+            "Status: FESTA ÉPICA CONFIRMADA! 🎉"
+        ];
+        
+        let messageIndex = 0;
+        let charIndex = 0;
+        const typingElement = document.getElementById('typing-text');
+        
+        function typeMessage() {
+            if (messageIndex < messages.length) {
+                if (charIndex < messages[messageIndex].length) {
+                    typingElement.textContent = messages[messageIndex].substring(0, charIndex + 1);
+                    charIndex++;
+                    setTimeout(typeMessage, 100);
+                } else {
+                    setTimeout(() => {
+                        messageIndex++;
+                        charIndex = 0;
+                        if (messageIndex < messages.length) {
+                            typeMessage();
+                        }
+                    }, 2000);
+                }
+            }
+        }
+        
+        // Contagem regressiva
+        function updateCountdown() {
+            const eventDate = new Date('2025-08-21T19:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            
+            if (distance < 0) {
+                document.getElementById('countdown').innerHTML = '<h2 style="color: #ff0080;">🎉 A FESTA COMEÇOU! 🎉</h2>';
+            }
+        }
+        
+        // Criar partículas flutuantes
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                
+                const colors = ['#00ff88', '#ff0080', '#0080ff'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Funções dos botões
+        function confirmarPresenca() {
+            const mensagem = "🤖 Oi Douglas! Confirmando minha presença na sua festa de 21 anos! Vai ser incrível! 🎉🎂";
+            const numeroWhatsApp = "5581986103152";
+            
+            if (numeroWhatsApp) {
+                const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+                window.open(url, '_blank');
+            } else {
+                // Se não tiver número, copia a mensagem
+                navigator.clipboard.writeText(mensagem).then(() => {
+                    alert('🤖 ChatGPT: Mensagem copiada! Cole no WhatsApp do Douglas para confirmar sua presença! 📱');
+                });
+            }
+        }
+        
+
+        
+        // Inicializar animações
+        setTimeout(typeMessage, 1000);
+        setInterval(updateCountdown, 1000);
+        createParticles();
+        updateCountdown();
+        
+        // Efeito de clique nas partículas
+        document.addEventListener('click', function(e) {
+            const colors = ['#00ff88', '#ff0080', '#0080ff'];
+            for (let i = 0; i < 5; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'fixed';
+                particle.style.left = e.clientX + 'px';
+                particle.style.top = e.clientY + 'px';
+                particle.style.width = '6px';
+                particle.style.height = '6px';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.borderRadius = '50%';
+                particle.style.pointerEvents = 'none';
+                particle.style.zIndex = '1000';
+                particle.style.animation = 'float-particle 2s ease-out forwards';
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 2000);
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96a6eb474033cad2',t:'MTc1NDQwMzQ1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
