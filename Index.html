@@ -156,6 +156,15 @@
             box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
         }
         
+        .location-card {
+            cursor: pointer;
+        }
+        
+        .location-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.4);
+        }
+        
         .detail-icon {
             font-size: 3rem;
             margin-bottom: 20px;
@@ -376,10 +385,10 @@
                 <p class="detail-info">21 de Agosto 2025<br>19:00h</p>
             </div>
             
-            <div class="detail-card">
+            <div class="detail-card location-card" onclick="abrirMaps()">
                 <div class="detail-icon">📍</div>
                 <h3 class="detail-title">LOCAL</h3>
-                <p class="detail-info">Caricatura do Chicão</p>
+                <p class="detail-info">Caricatura do Chicão<br><small style="color: #00ff88;">📱 Clique para abrir no Maps</small></p>
             </div>
         </div>
         
@@ -498,6 +507,11 @@
             }
         }
         
+        function abrirMaps() {
+            const urlMaps = "https://maps.app.goo.gl/b1tRCJ6uvXuvPDBi9";
+            window.open(urlMaps, '_blank');
+        }
+        
 
         
         // Inicializar animações
@@ -530,5 +544,5 @@
             }
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96a6eb474033cad2',t:'MTc1NDQwMzQ1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96a6ff1893c76454',t:'MTc1NDQwNDI2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
